@@ -1,0 +1,8 @@
+.IMG{
+  background-image: url('../src/img/1.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: aqua;
+}
+
