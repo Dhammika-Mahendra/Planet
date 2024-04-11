@@ -4,6 +4,8 @@ import { useEffect,useRef,useContext} from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Contxt from './Contx';
+import earthIMG from '../src/earthIMG.jpg'
+import sunIMG from '../src/sunIMG.jpg'
 
 export default function Screen() {
 
@@ -11,26 +13,28 @@ export default function Screen() {
 
   const ref = useRef();
 
-  useEffect(()=>{
+useEffect(()=>{
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 45, (window.innerWidth*0.8) / window.innerHeight, 0.1, 1000 );
-
-const directionalLight = new THREE.PointLight( 0xffffff,10,15 );
-scene.add( directionalLight );
-directionalLight.position.x=0
-directionalLight.position.y=0
-
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth*0.8, window.innerHeight );
-ref.current.appendChild( renderer.domElement );
+if (ref.current.children.length === 0) {
+  ref.current.appendChild(renderer.domElement);
+}
+
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
+//light (for sun)-------------------------------------------------------------------
+const pointLight = new THREE.PointLight( 0xffffff,10,15 );
+scene.add( pointLight );
+pointLight.position.x=0
+pointLight.position.y=0
 
 //Earth------------------------------------------------------------------
 const geometry = new THREE.SphereGeometry( 2,32,32 );
-const material = new THREE.MeshStandardMaterial( { map:new THREE.TextureLoader().load('earth.jpg') } );
+const material = new THREE.MeshStandardMaterial( { map:new THREE.TextureLoader().load(earthIMG) } );
 const earth = new THREE.Mesh( geometry, material );
 scene.add( earth );
 earth.position.x=6
@@ -54,10 +58,9 @@ earth.rotateZ(-0.4101524)
 
 //Sun
 const geometry2 = new THREE.SphereGeometry( 2,32,32 );
-const material2 = new THREE.MeshBasicMaterial( { map:new THREE.TextureLoader().load('sun.jpg') } );
+const material2 = new THREE.MeshBasicMaterial( { map:new THREE.TextureLoader().load(sunIMG) } );
 const sun = new THREE.Mesh( geometry2, material2 );
 scene.add( sun );
-//earth.add(wireEarth)
 
 //Rotation axis of earth-------------------------------------------------------
 const material3 = new THREE.LineBasicMaterial({
@@ -111,7 +114,6 @@ animate();
 
   return () => {
     cancelAnimationFrame(animationId); // Cancel the animation
-    ref.current.removeChild(renderer.domElement); // Remove the canvas from the div
   };
 
   },[])
