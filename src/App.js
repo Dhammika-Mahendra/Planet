@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Controller from "./Controller";
-import Screen from "./Screen"
 import { Contx } from "./Contx";
+import View from "./View";
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
   return (
     <Contx>
       <div style={{margin:'0',padding:'0',width:'100vw',height:'100vh',display:'flex'}}>
-        <Screen></Screen>
+        <View></View>
         <Controller></Controller>
       </div>
     </Contx>

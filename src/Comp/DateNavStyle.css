@@ -1,0 +1,66 @@
+#center {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+#slider {
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+  }
+#knob {
+    width: 150px;
+    height: 150px;
+    background: rgb(222, 222, 222);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+#knob #rotator {
+    width: 120px;
+    height: 120px;
+    background: rgb(235, 235, 235);
+    border-radius: 50%;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2), inset 1px 2px 1px white,
+      2px -1px 1px rgba(0, 0, 0, 0.2), -1px 0px 1px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+#knob #text {
+    width: 40px;
+    height: 40px;
+    margin: 0 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(57, 55, 53);
+    border: 0.3mm solid rgba(57, 55, 53);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+#pointer {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: calc(50% - 10px);
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    transform-origin: 110px 10px;
+    transform: rotate(-45deg);
+  }
