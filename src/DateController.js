@@ -1,4 +1,4 @@
-import { Box, Slider, Switch, Typography } from '@mui/material'
+import { Box, Checkbox, FormControlLabel, Slider, Switch, Typography } from '@mui/material'
 import React from 'react'
 import { useState } from 'react';
 import Contxt from './Contx';
@@ -8,6 +8,7 @@ export default function DateController() {
 
     const {autoR,setAutoR}=useContext(Contxt)
     const {date,setDate}=useContext(Contxt)
+    const {dateFeedBack}=useContext(Contxt)
 
     const [dateStore,setDateStore]=useState(0)
 
@@ -40,8 +41,10 @@ export default function DateController() {
 
   return (
     <div>
-        <Switch size='small' checked={autoR} onChange={(e)=>setAutoR(e.target.checked)}></Switch>
+        <FormControlLabel size='small' control={<Checkbox checked={autoR} onChange={(e)=>setAutoR(e.target.checked)}/>} label="Auto" />
         <Typography>{getMonthAndDay(dateStore)}</Typography>
+        <Typography>{dateFeedBack}</Typography>
+
         <Box sx={{width:'750px',height:'30px',position:'fixed',top:'10px',left:'10px',backgroundColor:'#efefef',borderRadius:'15px',overflow:'hidden',display:'flex',flexDirection:'column',alignItems:'center'}}>
             <Box sx={{display:'flex',justifyContent:'space-between',width:'100%'}}>
                     <div style={{display:'flex',justifyContent:'center',flex:'1',backgroundColor:'yellow'}}>

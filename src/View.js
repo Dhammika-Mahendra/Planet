@@ -6,19 +6,25 @@ import Contxt from './Contx';
 import earthIMG from '../src/earthIMG.jpg'
 import sunIMG from '../src/sunIMG.jpg'
 import { useState } from 'react';
+import { set } from 'date-fns';
 
 export default function View() {
 
   const {speed}=useContext(Contxt)
   const {autoR}=useContext(Contxt)
-  const {date}=useContext(Contxt)
+  const {date,setDate}=useContext(Contxt)
+  const {dateFeedBack,setDateFeedBack}=useContext(Contxt)
 
   const ref = useRef();//the html element where scene is added into
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const controlRef = useRef(null)
-  const [cameraPosition, setCameraPosition] = useState({x:0,y:12,z:0});
+  const [cameraPosition, setCameraPosition] = useState({x:0,y:20,z:0});
+  const [pos,setPos] = useState(0);
+  const [dateTemp,setDateTemp]=useState(0)
+  const [key,setKey]=useState(true)
+
 
 useEffect(()=>{
 //Basic scene setting ====================================================================================
@@ -58,7 +64,8 @@ const material5 = new THREE.LineBasicMaterial( { color: 0xff0000 } );
 const ellipse = new THREE.Line( geometry5, material5 );
 ellipse.rotateX(1.5708)
 earth.add(ellipse)
-earth.rotateZ(-0.4101524)
+earth.rotateZ(0.4101524)
+
 
 //Sun-----------------------------------------------------------------------------------------------
 const geometry2 = new THREE.SphereGeometry( 2,32,32 );
@@ -71,22 +78,27 @@ scene.add( pointLight );
 pointLight.position.x=0
 pointLight.position.y=0
 
-//Rotation axis of earth-------------------------------------------------------
-const material3 = new THREE.LineBasicMaterial({
+const light = new THREE.AmbientLight( 0x404040); // soft white light
+scene.add( light );
+
+//sunlight toward earth
+
+//Rotation axis of earth---------------------------------- ---------------------
+const materialRTAX = new THREE.LineBasicMaterial({
 	color: 0x0000ff
 });
-const points = [];
-points.push( new THREE.Vector3( 0,3,0 ) );
-points.push( new THREE.Vector3( 0,-3,0 ) );
+const pointsRTAX = [];
+pointsRTAX.push( new THREE.Vector3( 0,3,0 ) );
+pointsRTAX.push( new THREE.Vector3( 0,-3,0 ) );
 
-const geometry3 = new THREE.BufferGeometry().setFromPoints( points );
-const line = new THREE.Line( geometry3, material3 );
-earth.add( line );
+const geometryRTAX = new THREE.BufferGeometry().setFromPoints( pointsRTAX );
+const lineRTAX = new THREE.Line( geometryRTAX, materialRTAX );
+earth.add( lineRTAX );
 
 //Earth trajectory
 const curve2 = new THREE.EllipseCurve(
 	0,  0,            // ax, aY
-	8, 	6,             // xRadius, yRadius
+	8, 	8,             // xRadius, yRadius
 	0,  2 * Math.PI,  // aStartAngle, aEndAngle
 	false,            // aClockwise
 	0                 // aRotation
@@ -105,8 +117,7 @@ camera.position.y = cameraPosition.y;
 //=======================================================================================================
 //=========================           Animation                   =======================================
 //=======================================================================================================
-
-let t=1
+let t=pos
 let animationId
 function animate() {
   controls.update();
@@ -117,30 +128,31 @@ function animate() {
       t -= 0.001*speed;
       if (t < 0) t = 1;
   }else{
-      if(date>=1 && date<=173){t=173-date}
-      else if(date>=174 && date<=182){t=538-date}
-      else if(date>=183 && date<=355){t=538-date}
-      else if(date>=356 && date<=365){t=538-date}
+      if(dateTemp>=1 && dateTemp<=184){t=185-dateTemp}
+      else if(dateTemp>=185 && dateTemp<=365){t=550-dateTemp}
       t=t/365
   }
   
   //earth rotation
   earth.rotateOnAxis(new THREE.Vector3(0,1,0),0.01745)//around axis
-  let point//revolution
-  if(autoR){
-    point = curve2.getPoint(t);
-  }else{
-    point = curve2.getPoint(t);
-  }
+  let point=curve2.getPoint(t);//revolution
+  
 	let vector = new THREE.Vector3(point.x, point.y, point.z)
 	vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2);
   earth.position.copy(vector)
 
-  //keep camera positions stored , not to change the orbit controls
-  setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
-
   renderer.render( scene, camera );
 
+  //keep camera positions stored , not to change the orbit controls
+  setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
+  setPos(t)
+
+  //date store to pick up the date left 
+  let tmp=Math.ceil(t*365)
+  if(tmp>=1 && tmp<=184){tmp=185-tmp}
+  else if(tmp>=185 && tmp<=365){tmp=550-tmp}
+  setDateTemp(tmp)
+  setDateFeedBack(tmp)
 }
 animate();
 
@@ -155,6 +167,7 @@ return () => {
 };
 
 },[autoR,date,speed])
+
 
   return (
     <div ref={ref}>
