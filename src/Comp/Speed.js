@@ -13,10 +13,10 @@ export default function Speed() {
     <Box sx={{ width: 200 ,mt:'10px'}}>
       <Slider
         aria-label="Temperature"
-        step={1}
+        step={0.2}
         marks
-        min={1}
-        max={5}
+        min={0.1}
+        max={2}
         value={speed}
         size='small'
         onChange={(e)=>setSpeed(e.target.value)}

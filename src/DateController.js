@@ -9,6 +9,12 @@ export default function DateController() {
     const {autoR,setAutoR}=useContext(Contxt)
     const {date,setDate}=useContext(Contxt)
 
+    const [dateStore,setDateStore]=useState(0)
+
+    const handleDate=()=>{
+        setDate(dateStore)
+    }
+
     function getMonthAndDay(dayNumber) {
         if(dayNumber<1 || dayNumber>365){
             return
@@ -27,7 +33,7 @@ export default function DateController() {
                 break;
             }
         }
-        return `${MonthTag[month-1]} ${day}`
+        return `${MonthTag[month-1]} ${day} ${dayNumber}`
         //console.log(`${MonthTag[month-1]}/${day}`)
     }
 
@@ -35,8 +41,7 @@ export default function DateController() {
   return (
     <div>
         <Switch size='small' checked={autoR} onChange={(e)=>setAutoR(e.target.checked)}></Switch>
-        <input type='number' onChange={(e)=>getMonthAndDay(e.target.value)}></input>
-        <Typography>{getMonthAndDay(date)}</Typography>
+        <Typography>{getMonthAndDay(dateStore)}</Typography>
         <Box sx={{width:'750px',height:'30px',position:'fixed',top:'10px',left:'10px',backgroundColor:'#efefef',borderRadius:'15px',overflow:'hidden',display:'flex',flexDirection:'column',alignItems:'center'}}>
             <Box sx={{display:'flex',justifyContent:'space-between',width:'100%'}}>
                     <div style={{display:'flex',justifyContent:'center',flex:'1',backgroundColor:'yellow'}}>
@@ -78,11 +83,12 @@ export default function DateController() {
             </Box>
             <Slider sx={{ width:730,position:'relative',top:'-10px'}}
             aria-label="Date"
-            min={0}
-            max={100}
-            value={date}
+            min={1}
+            max={365}
+            value={dateStore}
             size='small'
-            onChange={(e)=>setDate(e.target.value)}
+            onChange={(e)=>setDateStore(e.target.value)}
+            onMouseUp={handleDate}
             />
         </Box>
     </div>

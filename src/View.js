@@ -5,6 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Contxt from './Contx';
 import earthIMG from '../src/earthIMG.jpg'
 import sunIMG from '../src/sunIMG.jpg'
+import { useState } from 'react';
 
 export default function View() {
 
@@ -17,6 +18,7 @@ export default function View() {
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const controlRef = useRef(null)
+  const [cameraPosition, setCameraPosition] = useState({x:0,y:12,z:0});
 
 useEffect(()=>{
 //Basic scene setting ====================================================================================
@@ -29,7 +31,7 @@ if (ref.current.children.length === 0) {
 }
 
 const controls = new OrbitControls( camera, renderer.domElement );
-controls.update();
+controls.update()
 //========================================================================================================
 
 
@@ -89,22 +91,22 @@ const curve2 = new THREE.EllipseCurve(
 	false,            // aClockwise
 	0                 // aRotation
 );
-const points3 = curve2.getPoints( 100 );
+const points3 = curve2.getPoints( 365 );
 const geometry6 = new THREE.BufferGeometry().setFromPoints( points3 );
 const material6 = new THREE.LineBasicMaterial( { color: 0xffffff } );
 const ellipse2 = new THREE.Line( geometry6, material6 );
 ellipse2.rotateX(1.5708)
 scene.add(ellipse2)
 
-camera.position.z = 15;
-camera.position.x = 8;
-camera.position.y = 12;
+camera.position.z = cameraPosition.z;
+camera.position.x = cameraPosition.x;
+camera.position.y = cameraPosition.y;
 
 //=======================================================================================================
 //=========================           Animation                   =======================================
 //=======================================================================================================
 
-let t=0
+let t=1
 let animationId
 function animate() {
   controls.update();
@@ -112,10 +114,14 @@ function animate() {
 	sun.rotation.y+=0.0025
   
   if(autoR){//if earth is set to revolve auto
-      t += 0.001*speed;
-      if (t > 1) t = 0;
+      t -= 0.001*speed;
+      if (t < 0) t = 1;
   }else{
-      t=date/100
+      if(date>=1 && date<=173){t=173-date}
+      else if(date>=174 && date<=182){t=538-date}
+      else if(date>=183 && date<=355){t=538-date}
+      else if(date>=356 && date<=365){t=538-date}
+      t=t/365
   }
   
   //earth rotation
@@ -129,6 +135,9 @@ function animate() {
 	let vector = new THREE.Vector3(point.x, point.y, point.z)
 	vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2);
   earth.position.copy(vector)
+
+  //keep camera positions stored , not to change the orbit controls
+  setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
 
   renderer.render( scene, camera );
 
