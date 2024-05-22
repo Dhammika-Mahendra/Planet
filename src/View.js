@@ -6,7 +6,6 @@ import Contxt from './Contx';
 import earthIMG from '../src/earthIMG.jpg'
 import sunIMG from '../src/sunIMG.jpg'
 import { useState } from 'react';
-import { set } from 'date-fns';
 
 export default function View() {
 
@@ -20,13 +19,15 @@ export default function View() {
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const controlRef = useRef(null)
+
   const [cameraPosition, setCameraPosition] = useState({x:0,y:20,z:0});
   const [pos,setPos] = useState(0);
   const [dateTemp,setDateTemp]=useState(0)
-  const [key,setKey]=useState(true)
+  const [autoRstore,setAutoRstore]=useState(autoR)
 
 
 useEffect(()=>{
+  
 //Basic scene setting ====================================================================================
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 45, (window.innerWidth*0.8) / window.innerHeight, 0.1, 1000 );
@@ -124,12 +125,12 @@ function animate() {
 	animationId=requestAnimationFrame( animate );
 	sun.rotation.y+=0.0025
   
-  if(autoR){//if earth is set to revolve auto
+  if(autoRstore){//if earth is set to revolve auto
       t -= 0.001*speed;
       if (t < 0) t = 1;
   }else{
-      if(dateTemp>=1 && dateTemp<=184){t=185-dateTemp}
-      else if(dateTemp>=185 && dateTemp<=365){t=550-dateTemp}
+      if(date>=1 && date<=184){t=185-date}
+      else if(date>=185 && date<=365){t=550-date}
       t=t/365
   }
   
@@ -166,8 +167,14 @@ return () => {
   renderer.dispose();
 };
 
-},[autoR,date,speed])
+},[autoRstore,speed,date])
 
+useEffect(() => {
+  if (!autoR) {
+    setDate(dateTemp);
+  }
+  setAutoRstore(autoR)
+}, [autoR]);
 
   return (
     <div ref={ref}>

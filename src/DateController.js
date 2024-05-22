@@ -3,6 +3,7 @@ import React from 'react'
 import { useState } from 'react';
 import Contxt from './Contx';
 import { useContext } from 'react';
+import { useEffect } from 'react';
 
 export default function DateController() {
 
@@ -38,6 +39,12 @@ export default function DateController() {
         //console.log(`${MonthTag[month-1]}/${day}`)
     }
 
+
+    useEffect(()=>{
+        if(!autoR){
+            setDateStore(date)
+        }
+    },[autoR])
 
   return (
     <div>
