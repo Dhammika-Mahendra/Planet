@@ -9,10 +9,15 @@ import { useState } from 'react';
 
 export default function View() {
 
-  const {speed}=useContext(Contxt)
-  const {autoR}=useContext(Contxt)
-  const {date,setDate}=useContext(Contxt)
+  const {speed}=useContext(Contxt)//speed of the earth
+  const {date,setDate}=useContext(Contxt)//date of the earth's current position
   const {dateFeedBack,setDateFeedBack}=useContext(Contxt)
+  
+  {/* ---- boolean options ---------------------------------- */}
+  const {autoR}=useContext(Contxt)//earth revolving mode
+  const {lightHalf}=useContext(Contxt)//light half of the earth
+  const {equ}=useContext(Contxt)//light half of the earth
+  const {tropics}=useContext(Contxt)//cancer and capricon lines
 
   const ref = useRef();//the html element where scene is added into
   const sceneRef = useRef(null);
@@ -53,10 +58,19 @@ earth.position.x=6
 //Equator
 const curve = new THREE.EllipseCurve(
 	0,  0,            // ax, aY
-	2.2,  2.2,         // xRadius, yRadius
+	2.05,  2.05,         // xRadius, yRadius
 	0,  2 * Math.PI,  // aStartAngle, aEndAngle
 	false,            // aClockwise
 	0                 // aRotation
+);
+
+//capricon
+const curveTropic = new THREE.EllipseCurve(
+	0,  0,            
+	1.9,  1.9,         
+	0,  2 * Math.PI,  
+	false,            
+	0                
 );
 
 const points2 = curve.getPoints( 50 );
@@ -64,20 +78,61 @@ const geometry5 = new THREE.BufferGeometry().setFromPoints( points2 );
 const material5 = new THREE.LineBasicMaterial( { color: 0xff0000 } );
 const ellipse = new THREE.Line( geometry5, material5 );
 ellipse.rotateX(1.5708)
-earth.add(ellipse)
+
+const pointsCapricon = curveTropic.getPoints( 50 );
+const geometryCapricon = new THREE.BufferGeometry().setFromPoints( pointsCapricon );
+const capricon = new THREE.Line( geometryCapricon, material5 );
+capricon.position.y-=0.7
+capricon.rotateX(1.5708)
+
+const pointsCancer = curveTropic.getPoints( 50 );
+const geometryCancer = new THREE.BufferGeometry().setFromPoints( pointsCancer );
+const cancer = new THREE.Line( geometryCancer, material5 );
+cancer.position.y+=0.7
+cancer.rotateX(1.5708)
+
+if(tropics){earth.add(capricon);earth.add(cancer)}
+if(equ){earth.add(ellipse)}else{earth.remove(ellipse)}
 earth.rotateZ(0.4101524)
 
+const width = 8;
+const height = 8;
+const intensity = 2;
+const rectLight = new THREE.RectAreaLight( 0xffffff, intensity,  width, height );
+rectLight.position.set( 0, 0, 0 );
+scene.add( rectLight )
+
+//lightHalf-------------------------------
+
+const curve3 = new THREE.EllipseCurve(
+	0,  0,            // ax, aY
+	2.2,  2.2,         // xRadius, yRadius
+	0,  2 * Math.PI,  // aStartAngle, aEndAngle
+	false,            // aClockwise
+	0                 // aRotation
+);
+
+const points4 = curve3.getPoints( 50 );
+const geometry3 = new THREE.BufferGeometry().setFromPoints( points4 );
+const material3 = new THREE.LineBasicMaterial( { color: 0x00ff00 } );
+const ellipse3 = new THREE.Line( geometry3, material3 );
+ellipse3.rotateZ(1.5708)
+if(lightHalf){
+  scene.add(ellipse3)
+}else{
+  scene.remove(ellipse3)
+}
 
 //Sun-----------------------------------------------------------------------------------------------
 const geometry2 = new THREE.SphereGeometry( 2,32,32 );
 const material2 = new THREE.MeshBasicMaterial( { map:new THREE.TextureLoader().load(sunIMG) } );
 const sun = new THREE.Mesh( geometry2, material2 );
-scene.add( sun );
+//scene.add( sun );
 
 const pointLight = new THREE.PointLight( 0xffffff,10,15);//sun light
-scene.add( pointLight );
+/* scene.add( pointLight );
 pointLight.position.x=0
-pointLight.position.y=0
+pointLight.position.y=0 */
 
 const light = new THREE.AmbientLight( 0x404040); // soft white light
 scene.add( light );
@@ -120,10 +175,14 @@ camera.position.y = cameraPosition.y;
 //=======================================================================================================
 let t=pos
 let animationId
+let direction
+const center = new THREE.Vector3(0, 0, 0);
+const up = new THREE.Vector3(0, 0, 1); // Up vector
+
 function animate() {
   controls.update();
 	animationId=requestAnimationFrame( animate );
-	sun.rotation.y+=0.0025
+	//sun.rotation.y+=0.0025
   
   if(autoRstore){//if earth is set to revolve auto
       t -= 0.001*speed;
@@ -141,8 +200,16 @@ function animate() {
 	let vector = new THREE.Vector3(point.x, point.y, point.z)
 	vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2);
   earth.position.copy(vector)
-
+  rectLight.lookAt(vector.x,vector.y,vector.z)
   renderer.render( scene, camera );
+
+  //lightHalf rotation and position
+  if(lightHalf){
+    ellipse3.position.copy(vector)
+    direction = new THREE.Vector3().subVectors(center, ellipse3.position).normalize();
+    const quaternion = new THREE.Quaternion().setFromUnitVectors(up, direction);
+    ellipse3.quaternion.copy(quaternion);
+  }
 
   //keep camera positions stored , not to change the orbit controls
   setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
@@ -167,7 +234,7 @@ return () => {
   renderer.dispose();
 };
 
-},[autoRstore,speed,date])
+},[autoRstore,speed,date,lightHalf,equ,tropics])
 
 useEffect(() => {
   if (!autoR) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import Speed from './Comp/Speed'
 import DateController from './DateController'
-import DateNavigator from './Comp/DateNavigator'
+import OptionsSelector from './Comp/OptionsSelector'
 
 export default function Controller() {
 
@@ -9,6 +9,7 @@ export default function Controller() {
     <div style={{height:'100%',width:'20%'}}>
         <DateController></DateController>
         <Speed></Speed>
+        <OptionsSelector></OptionsSelector>
     </div>
   )
 }

@@ -9,9 +9,13 @@ export function Contx({children}){
     const [autoR,setAutoR]=useState(true)
     const [date,setDate]=useState(1)
     const [dateFeedBack,setDateFeedBack]=useState(1)
+    {/* ----- options panel -------------- */}
+    const [lightHalf,setlightHalf]=useState(false)//shows the light half of the earth
+    const [equ,setEqu]=useState(true)//equator
+    const [tropics,setTropics]=useState(false)//capricon and cancer
     
     return (
-        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack}}>
+        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack,lightHalf,setlightHalf,equ,setEqu,tropics,setTropics}}>
         {children}
         </Contxt.Provider>
   )
