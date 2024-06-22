@@ -18,6 +18,7 @@ export default function View() {
   const {lightHalf}=useContext(Contxt)//light half of the earth
   const {equ}=useContext(Contxt)//light half of the earth
   const {tropics}=useContext(Contxt)//cancer and capricon lines
+  const {poleCircles}=useContext(Contxt)//if pole circles on
 
   const ref = useRef();//the html element where scene is added into
   const sceneRef = useRef(null);
@@ -25,6 +26,9 @@ export default function View() {
   const rendererRef = useRef(null);
   const controlRef = useRef(null)
 
+  const {setCam}=useContext(Contxt)
+  const {cam}=useContext(Contxt)//imediate camera position button states
+  const [camLookAt,setCamLookAt]=useState({x:0,y:0,z:0})//store where camera look at, bec when cam property cahnges its settings are overridden by controls.update()
   const [cameraPosition, setCameraPosition] = useState({x:0,y:20,z:0});
   const [pos,setPos] = useState(0);
   const [dateTemp,setDateTemp]=useState(0)
@@ -43,9 +47,9 @@ if (ref.current.children.length === 0) {
 }
 
 const controls = new OrbitControls( camera, renderer.domElement );
+controls.target.set(camLookAt.x,camLookAt.y,camLookAt.z)
 controls.update()
 //========================================================================================================
-
 
 
 //Earth------------------------------------------------------------------------------------------------
@@ -58,7 +62,7 @@ earth.position.x=6
 //Equator
 const curve = new THREE.EllipseCurve(
 	0,  0,            // ax, aY
-	2.05,  2.05,         // xRadius, yRadius
+	2,  2,         // xRadius, yRadius
 	0,  2 * Math.PI,  // aStartAngle, aEndAngle
 	false,            // aClockwise
 	0                 // aRotation
@@ -67,7 +71,16 @@ const curve = new THREE.EllipseCurve(
 //capricon
 const curveTropic = new THREE.EllipseCurve(
 	0,  0,            
-	1.9,  1.9,         
+	1.87,  1.87,         
+	0,  2 * Math.PI,  
+	false,            
+	0                
+);
+
+//capricon
+const curvePole = new THREE.EllipseCurve(
+	0,  0,            
+	0.8,  0.8,         
 	0,  2 * Math.PI,  
 	false,            
 	0                
@@ -91,7 +104,20 @@ const cancer = new THREE.Line( geometryCancer, material5 );
 cancer.position.y+=0.7
 cancer.rotateX(1.5708)
 
-if(tropics){earth.add(capricon);earth.add(cancer)}
+const pointsPoleN = curvePole.getPoints( 30 );
+const geometryPoleN = new THREE.BufferGeometry().setFromPoints( pointsPoleN );
+const poleN = new THREE.Line( geometryPoleN, material5 );
+poleN.position.y+=1.85
+poleN.rotateX(1.5708)
+
+const pointsPoleS = curvePole.getPoints( 30 );
+const geometryPoleS = new THREE.BufferGeometry().setFromPoints( pointsPoleS );
+const poleS = new THREE.Line( geometryPoleS, material5 );
+poleS.position.y-=1.85
+poleS.rotateX(1.5708)
+
+if(tropics){earth.add(capricon);earth.add(cancer);}
+if(poleCircles){earth.add(poleN);earth.add(poleS);}
 if(equ){earth.add(ellipse)}else{earth.remove(ellipse)}
 earth.rotateZ(0.4101524)
 
@@ -106,7 +132,7 @@ scene.add( rectLight )
 
 const curve3 = new THREE.EllipseCurve(
 	0,  0,            // ax, aY
-	2.2,  2.2,         // xRadius, yRadius
+	2.03,  2.03,         // xRadius, yRadius
 	0,  2 * Math.PI,  // aStartAngle, aEndAngle
 	false,            // aClockwise
 	0                 // aRotation
@@ -180,7 +206,7 @@ const center = new THREE.Vector3(0, 0, 0);
 const up = new THREE.Vector3(0, 0, 1); // Up vector
 
 function animate() {
-  controls.update();
+  controls.update()
 	animationId=requestAnimationFrame( animate );
 	//sun.rotation.y+=0.0025
   
@@ -211,6 +237,49 @@ function animate() {
     ellipse3.quaternion.copy(quaternion);
   }
 
+  //Check for imediate camera postion buttons
+  if(cam!==''){
+    switch(cam){
+      case 'top':{
+        camera.position.y=7
+        camera.position.x=vector.x
+        camera.position.z=vector.z
+        setCamLookAt({x:vector.x,y:0,z:vector.z})
+        setCam('')
+      } break;
+      case 'bottom':{
+        camera.position.y=-7
+        camera.position.x=vector.x
+        camera.position.z=vector.z
+        setCamLookAt({x:vector.x,y:0,z:vector.z})
+        setCam('')
+      } break;
+      case 'left':{
+        const direction = new THREE.Vector3().subVectors(vector,new THREE.Vector3(0, 0, 0)).normalize()
+        const up = new THREE.Vector3(0, 1, 0); // Up vector
+        const perpendicular = new THREE.Vector3().crossVectors(direction, up).normalize();
+        if (perpendicular.length() === 0) {
+          perpendicular.crossVectors(direction, new THREE.Vector3(1, 0, 0)).normalize();
+        }
+        const newVector = new THREE.Vector3().addVectors(vector, perpendicular.multiplyScalar(7));
+        camera.position.copy(newVector)
+        setCamLookAt({x:vector.x,y:0,z:vector.z})
+        setCam('')
+      } break;
+      case 'right':{
+        const direction = new THREE.Vector3().subVectors(vector,new THREE.Vector3(0, 0, 0)).normalize()
+        const up = new THREE.Vector3(0, 1, 0); // Up vector
+        const perpendicular = new THREE.Vector3().crossVectors(direction, up).normalize();
+        if (perpendicular.length() === 0) {
+          perpendicular.crossVectors(direction, new THREE.Vector3(1, 0, 0)).normalize();
+        }
+        const newVector = new THREE.Vector3().addVectors(vector, perpendicular.multiplyScalar(-7));
+        camera.position.copy(newVector)
+        setCamLookAt({x:vector.x,y:0,z:vector.z})
+        setCam('')
+      } break;
+    }
+  }
   //keep camera positions stored , not to change the orbit controls
   setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
   setPos(t)
@@ -221,6 +290,7 @@ function animate() {
   else if(tmp>=185 && tmp<=365){tmp=550-tmp}
   setDateTemp(tmp)
   setDateFeedBack(tmp)
+
 }
 animate();
 
@@ -234,7 +304,7 @@ return () => {
   renderer.dispose();
 };
 
-},[autoRstore,speed,date,lightHalf,equ,tropics])
+},[autoRstore,speed,date,lightHalf,equ,tropics,cam,poleCircles])
 
 useEffect(() => {
   if (!autoR) {

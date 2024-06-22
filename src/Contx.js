@@ -13,9 +13,16 @@ export function Contx({children}){
     const [lightHalf,setlightHalf]=useState(false)//shows the light half of the earth
     const [equ,setEqu]=useState(true)//equator
     const [tropics,setTropics]=useState(false)//capricon and cancer
+    const [poleCircles,setPoleCircles]=useState(true)//pole circles
+
+    {/* ----- camera direction ------------- */}
+    const [cam,setCam]=useState('')//camera direction
+
+    {/*------- track camera ---------------- */}
+    const [trackCam,setTrackCam]=useState(false)
     
     return (
-        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack,lightHalf,setlightHalf,equ,setEqu,tropics,setTropics}}>
+        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack,lightHalf,setlightHalf,equ,setEqu,tropics,setTropics,cam,setCam,poleCircles,setPoleCircles,trackCam,setTrackCam}}>
         {children}
         </Contxt.Provider>
   )
