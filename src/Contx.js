@@ -14,6 +14,9 @@ export function Contx({children}){
     const [equ,setEqu]=useState(true)//equator
     const [tropics,setTropics]=useState(false)//capricon and cancer
     const [poleCircles,setPoleCircles]=useState(true)//pole circles
+    const [earthAxis,setEarthAxis]=useState(true)//earth cross axis
+    const [sunRay,setSunRay]=useState(true)//perpendicular ray from sun
+    const [sunSph,setSunSph]=useState(false)//sun
 
     {/* ----- camera direction ------------- */}
     const [cam,setCam]=useState('')//camera direction
@@ -22,7 +25,7 @@ export function Contx({children}){
     const [trackCam,setTrackCam]=useState(false)
     
     return (
-        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack,lightHalf,setlightHalf,equ,setEqu,tropics,setTropics,cam,setCam,poleCircles,setPoleCircles,trackCam,setTrackCam}}>
+        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack,lightHalf,setlightHalf,equ,setEqu,tropics,setTropics,cam,setCam,poleCircles,setPoleCircles,trackCam,setTrackCam,earthAxis,setEarthAxis,sunRay,setSunRay,sunSph,setSunSph}}>
         {children}
         </Contxt.Provider>
   )

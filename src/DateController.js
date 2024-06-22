@@ -11,7 +11,7 @@ export default function DateController() {
     const {date,setDate}=useContext(Contxt)
     const {dateFeedBack}=useContext(Contxt)
 
-    const [dateStore,setDateStore]=useState(0)
+    const [dateStore,setDateStore]=useState(0)//needed for this component only
 
     const handleDate=()=>{
         setDate(dateStore)
@@ -54,40 +54,40 @@ export default function DateController() {
 
         <Box sx={{width:'750px',height:'30px',position:'fixed',top:'10px',left:'10px',backgroundColor:'#efefef',borderRadius:'15px',overflow:'hidden',display:'flex',flexDirection:'column',alignItems:'center'}}>
             <Box sx={{display:'flex',justifyContent:'space-between',width:'100%'}}>
-                    <div style={{display:'flex',justifyContent:'center',flex:'1',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',flex:'1',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Jan</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Feb</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Mar</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Apr</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>May</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Jun</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Jul</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Aug</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Sep</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Oct</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',width:'62px',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Nov</Typography>
                     </div>
-                    <div style={{display:'flex',justifyContent:'center',flex:'1',backgroundColor:'yellow'}}>
+                    <div style={{display:'flex',justifyContent:'center',flex:'1',backgroundColor:'#efefef'}}>
                         <Typography sx={{fontSize:'12px'}}>Dec</Typography>
                     </div>
             </Box>
