@@ -9,11 +9,10 @@ export default function DateController() {
 
     const {autoR,setAutoR}=useContext(Contxt)
     const {date,setDate}=useContext(Contxt)
-    const {dateFeedBack}=useContext(Contxt)
+    const {dateFeedBack}=useContext(Contxt)//date updated by the view
 
-    const [dateStore,setDateStore]=useState(0)//needed for this component only
-
-    const handleDate=()=>{
+    const [dateStore,setDateStore]=useState(1)//needed for this component only
+    const handleDate=()=>{//as soon as handle released storedate set to be real date
         setDate(dateStore)
     }
 
@@ -21,11 +20,18 @@ export default function DateController() {
         if(dayNumber<1 || dayNumber>365){
             return
         }
+        var month = 0;
+        var day = 0;
+
+        if(dayNumber>13){
+            day=dayNumber-13
+        }else{
+            day=352+dayNumber
+        }
+
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var MonthTag =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
-        var month = 0;
-        var day = dayNumber;
         
         for (var i = 0; i < 12; i++) {
             day -= daysInMonth[i];
@@ -35,22 +41,54 @@ export default function DateController() {
                 break;
             }
         }
-        return `${MonthTag[month-1]} ${day} ${dayNumber}`
+        return `${MonthTag[month-1]} ${day}`
         //console.log(`${MonthTag[month-1]}/${day}`)
     }
 
+    function getMonthAndDayNav(dayNumber) {
+        if(dayNumber<1 || dayNumber>365){
+            return
+        }
+        var month = 0;
+        var day = dayNumber;
+
+        var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var MonthTag =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
+        
+        for (var i = 0; i < 12; i++) {
+            day -= daysInMonth[i];
+            if (day <= 0) {
+                month = i + 1; // Months are 1-based
+                day += daysInMonth[i]; // Add back the days of the current month
+                break;
+            }
+        }
+        return `${MonthTag[month-1]} ${day}`
+        //console.log(`${MonthTag[month-1]}/${day}`)
+    }
 
     useEffect(()=>{
         if(!autoR){
-            setDateStore(date)
+            let tmp=dateFeedBack
+            if(tmp>13){
+                tmp=tmp-12
+            }else{
+                tmp=353+tmp
+            }
+            setDateStore(tmp)
         }
     },[autoR])
 
   return (
     <div>
         <FormControlLabel size='small' control={<Checkbox checked={autoR} onChange={(e)=>setAutoR(e.target.checked)}/>} label="Auto" />
-        <Typography>{getMonthAndDay(dateStore)}</Typography>
-        <Typography>{dateFeedBack}</Typography>
+        <Typography>{getMonthAndDay(dateFeedBack)}</Typography>
+        <Box sx={{backgroundColor:'yellow'}}>
+            <Typography>Date nav</Typography>
+            <Typography>{getMonthAndDayNav(dateStore)}</Typography>
+            <Typography>{dateStore}th day</Typography>
+        </Box>
 
         <Box sx={{width:'750px',height:'30px',position:'fixed',top:'10px',left:'10px',backgroundColor:'#efefef',borderRadius:'15px',overflow:'hidden',display:'flex',flexDirection:'column',alignItems:'center'}}>
             <Box sx={{display:'flex',justifyContent:'space-between',width:'100%'}}>

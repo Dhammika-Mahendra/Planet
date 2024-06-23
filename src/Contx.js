@@ -17,15 +17,13 @@ export function Contx({children}){
     const [earthAxis,setEarthAxis]=useState(true)//earth cross axis
     const [sunRay,setSunRay]=useState(true)//perpendicular ray from sun
     const [sunSph,setSunSph]=useState(false)//sun
+    const [traject,setTraject]=useState(true)//earth trajectory path
 
     {/* ----- camera direction ------------- */}
     const [cam,setCam]=useState('')//camera direction
-
-    {/*------- track camera ---------------- */}
-    const [trackCam,setTrackCam]=useState(false)
     
     return (
-        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack,lightHalf,setlightHalf,equ,setEqu,tropics,setTropics,cam,setCam,poleCircles,setPoleCircles,trackCam,setTrackCam,earthAxis,setEarthAxis,sunRay,setSunRay,sunSph,setSunSph}}>
+        <Contxt.Provider value={{speed,setSpeed,autoR,setAutoR,date,setDate,dateFeedBack,setDateFeedBack,lightHalf,setlightHalf,equ,setEqu,tropics,setTropics,cam,setCam,poleCircles,setPoleCircles,earthAxis,setEarthAxis,sunRay,setSunRay,sunSph,setSunSph,traject,setTraject}}>
         {children}
         </Contxt.Provider>
   )

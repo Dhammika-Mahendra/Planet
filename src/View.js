@@ -22,6 +22,7 @@ export default function View() {
   const {earthAxis}=useContext(Contxt)//if earth axis on
   const {sunRay}=useContext(Contxt)//if perpendicular sun ray on
   const {sunSph}=useContext(Contxt)//if sun is on
+  const {traject}=useContext(Contxt)//if earth trajectory path on
 
   const {trackCam}=useContext(Contxt)//track camera
 
@@ -205,7 +206,7 @@ const geometry6 = new THREE.BufferGeometry().setFromPoints( points3 );
 const material6 = new THREE.LineBasicMaterial( { color: 0xffffff } );
 const ellipse2 = new THREE.Line( geometry6, material6 );
 ellipse2.rotateX(1.5708)
-scene.add(ellipse2)
+if(traject){scene.add(ellipse2)}
 
 camera.position.z = cameraPosition.z;
 camera.position.x = cameraPosition.x;
@@ -278,15 +279,17 @@ function animate() {
         camera.position.y=7
         camera.position.x=vector.x
         camera.position.z=vector.z
-        setCamLookAt({x:vector.x,y:0,z:vector.z})
-        setCam('')
+        controls.target.set(vector.x,vector.y,vector.z)
+        setCamLookAt({x:vector.x,y:vector.y,z:vector.z})
+        setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
       } break;
       case 'bottom':{
         camera.position.y=-7
         camera.position.x=vector.x
         camera.position.z=vector.z
-        setCamLookAt({x:vector.x,y:0,z:vector.z})
-        setCam('')
+        controls.target.set(vector.x,vector.y,vector.z)
+        setCamLookAt({x:vector.x,y:vector.y,z:vector.z})
+        setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
       } break;
       case 'left':{
         const direction = new THREE.Vector3().subVectors(vector,new THREE.Vector3(0, 0, 0)).normalize()
@@ -297,8 +300,9 @@ function animate() {
         }
         const newVector = new THREE.Vector3().addVectors(vector, perpendicular.multiplyScalar(7));
         camera.position.copy(newVector)
-        setCamLookAt({x:vector.x,y:0,z:vector.z})
-        setCam('')
+        controls.target.set(vector.x,vector.y,vector.z)
+        setCamLookAt({x:vector.x,y:vector.y,z:vector.z})
+        setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
       } break;
       case 'right':{
         const direction = new THREE.Vector3().subVectors(vector,new THREE.Vector3(0, 0, 0)).normalize()
@@ -309,11 +313,29 @@ function animate() {
         }
         const newVector = new THREE.Vector3().addVectors(vector, perpendicular.multiplyScalar(-7));
         camera.position.copy(newVector)
-        setCamLookAt({x:vector.x,y:0,z:vector.z})
-        setCam('')
+        controls.target.set(vector.x,vector.y,vector.z)
+        setCamLookAt({x:vector.x,y:vector.y,z:vector.z})
+        setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
       } break;
+      case 'sun':{
+        camera.position.x =0;
+        camera.position.y =0.8;
+        camera.position.z =0;
+        controls.target.set(vector.x,vector.y,vector.z)
+        setCamLookAt({x:vector.x,y:vector.y,z:vector.z})
+        setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
+      }break;
+      case 'upMid':{
+        camera.position.x =0;
+        camera.position.y =25;
+        camera.position.z =0;
+        controls.target.set(0,0,0)
+        setCamLookAt({x:0,y:0,z:0})
+        setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
+      }break;
     }
   }
+
 
   //keep camera positions stored , not to change the orbit controls
   setCameraPosition({x:camera.position.x,y:camera.position.y,z:camera.position.z})
@@ -339,11 +361,17 @@ return () => {
   renderer.dispose();
 };
 
-},[autoRstore,speed,date,lightHalf,equ,tropics,cam,poleCircles,sunRay,earthAxis,trackCam,sunSph])
+},[autoRstore,speed,date,lightHalf,equ,tropics,cam,poleCircles,sunRay,earthAxis,trackCam,sunSph,traject])
 
 useEffect(() => {
   if (!autoR) {
-    setDate(dateTemp);
+    let day=dateTemp
+    if(dateTemp>13){
+      day=dateTemp-12
+    }else{
+      day=353+dateTemp
+  }
+    setDate(day);
   }
   setAutoRstore(autoR)
 }, [autoR]);
