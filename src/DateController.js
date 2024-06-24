@@ -84,6 +84,7 @@ export default function DateController() {
     <div>
         <FormControlLabel size='small' control={<Checkbox checked={autoR} onChange={(e)=>setAutoR(e.target.checked)}/>} label="Auto" />
         <Typography>{getMonthAndDay(dateFeedBack)}</Typography>
+        <Typography>{dateFeedBack}</Typography>
         <Box sx={{backgroundColor:'yellow'}}>
             <Typography>Date nav</Typography>
             <Typography>{getMonthAndDayNav(dateStore)}</Typography>
