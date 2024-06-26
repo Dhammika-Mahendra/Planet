@@ -10,6 +10,7 @@ import MidAxisIco from './Icons/midAxisIco'
 import { TropicIco } from './Icons/tropicIco'
 import { PolesIco } from './Icons/polesIco'
 import { LightIco } from './Icons/lightIco'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export default function OptionsSelector() {
 
@@ -23,15 +24,20 @@ export default function OptionsSelector() {
     const {traject,setTraject}=useContext(Contxt)
 
   return (
-    <Box sx={{width:'100%',display:'flex',justifyContent:'space-around'}}>
-        <EquatorIco vr={equ} setVar={setEqu}></EquatorIco>
-        <TropicIco vr={tropics} setVar={setTropics}></TropicIco>
-        <PolesIco vr={poleCircles} setVar={setPoleCircles}></PolesIco>
-        <LightIco vr={lightHalf} setVar={setlightHalf}></LightIco>
-        <MidAxisIco vr={earthAxis} setVar={setEarthAxis}></MidAxisIco>
-        <SouthEastIcon sx={{width:'20px',height:'20px',color:sunRay?'blue':'black',cursor:'pointer'}} onClick={()=>setSunRay(!sunRay)}></SouthEastIcon>
-        <Brightness5Icon sx={{width:'20px',height:'20px',color:sunSph?'blue':'black',cursor:'pointer'}} onClick={()=>setSunSph(!sunSph)}></Brightness5Icon>
-        <RotateLeftIcon sx={{width:'20px',height:'20px',color:traject?'blue':'black',cursor:'pointer'}} onClick={()=>setTraject(!traject)}></RotateLeftIcon>
+    <Box sx={{width:'100%',display:'flex',flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>
+        <Box sx={{display:'flex',justifyContent:'space-around',alignItems:'center',m:'10px',width:'80%',border:'1px solid lightGrey',borderRadius:'8px',p:'5px','&:hover':{backgroundColor:'#e3e3e3'}}}>
+          <EquatorIco vr={equ} setVar={setEqu}></EquatorIco>
+          <TropicIco vr={tropics} setVar={setTropics}></TropicIco>
+          <PolesIco vr={poleCircles} setVar={setPoleCircles}></PolesIco>
+          <LightIco vr={lightHalf} setVar={setlightHalf}></LightIco>
+          <MidAxisIco vr={earthAxis} setVar={setEarthAxis}></MidAxisIco>
+        </Box>
+        <Box sx={{display:'flex',justifyContent:'space-around',alignItems:'center',m:'10px',width:'60%',border:'1px solid lightGrey',borderRadius:'8px',p:'5px','&:hover':{backgroundColor:'#e3e3e3'}}}>
+          <SouthEastIcon sx={{width:'20px',height:'20px',color:sunRay?'blue':'black',cursor:'pointer'}} onClick={()=>setSunRay(!sunRay)}></SouthEastIcon>
+          <Brightness5Icon sx={{width:'20px',height:'20px',color:sunSph?'blue':'black',cursor:'pointer'}} onClick={()=>setSunSph(!sunSph)}></Brightness5Icon>
+          <RotateLeftIcon sx={{width:'20px',height:'20px',color:traject?'blue':'black',cursor:'pointer'}} onClick={()=>setTraject(!traject)}></RotateLeftIcon>
+          <CalendarMonthIcon sx={{width:'20px',height:'20px',color:'black'}}></CalendarMonthIcon>
+        </Box>
     </Box>
   )
 }

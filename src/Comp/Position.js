@@ -20,7 +20,7 @@ export default function Position() {
   }
 
   return (
-    <Box sx={{display:'flex',justifyContent:'space-around',alignItems:'center',mt:'15px'}}>
+    <Box sx={{width:'60%',display:'flex',justifyContent:'space-around',alignItems:'center',mt:'15px',border:'1px solid lightGrey',borderRadius:'8px',p:'5px','&:hover':{backgroundColor:'#e3e3e3'}}}>
       <Brightness7Icon sx={{cursor:'pointer',color:cam=='sun'?'blue':'black'}} onClick={()=>handleCam('sun')}/>
       <AdjustIcon sx={{cursor:'pointer',color:cam=='upMid'?'blue':'black'}} onClick={()=>handleCam('upMid')}></AdjustIcon>
       <Box sx={{display:'flex',flexDirection:'column',justifyContent:'space-between',alignItems:'center'}}>

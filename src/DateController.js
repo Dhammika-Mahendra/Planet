@@ -4,16 +4,34 @@ import { useState } from 'react';
 import Contxt from './Contx';
 import { useContext } from 'react';
 import { useEffect } from 'react';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
 export default function DateController() {
+
+    const [mouseX, setMouseX] = useState(0);
+
+    useEffect(() => {
+      const handleMouseMove = (event) => {
+        setMouseX(event.clientX);
+      };
+      window.addEventListener('mousemove', handleMouseMove); 
+      // Cleanup event listener on component unmount
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      };
+    }, []);
 
     const {autoR,setAutoR}=useContext(Contxt)
     const {date,setDate}=useContext(Contxt)
     const {dateFeedBack}=useContext(Contxt)//date updated by the view
 
+    const [move,setMove]=useState(false)//slider is on the move
+
     const [dateStore,setDateStore]=useState(1)//needed for this component only
     const handleDate=()=>{//as soon as handle released storedate set to be real date
         setDate(dateStore)
+        setMove(false)
     }
 
     function getMonthAndDay(dayNumber) {
@@ -82,14 +100,19 @@ export default function DateController() {
 
   return (
     <div>
-        <FormControlLabel size='small' control={<Checkbox checked={autoR} onChange={(e)=>setAutoR(e.target.checked)}/>} label="Auto" />
-        <Typography>{getMonthAndDay(dateFeedBack)}</Typography>
-        <Typography>{dateFeedBack}</Typography>
-        <Box sx={{backgroundColor:'yellow'}}>
+        <Box sx={{width:'250px',display:'flex',alignItems:'center',justifyContent:'start',p:'10px'}}>
+        {!autoR?<PlayCircleFilledWhiteIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>:<PauseCircleIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>}
+        <Box sx={{flex:1,display:'flex',flexDirection:'column',ml:'15px',pl:'15px',borderLeft:'2px solid grey'}}>
+            <Typography sx={{fontSize:'24px',fontWeight:'bold'}}>{getMonthAndDay(dateFeedBack)}</Typography>
+            <Typography>{dateFeedBack}</Typography>
+        </Box>
+        </Box>
+
+{/*         <Box sx={{backgroundColor:'yellow'}}>
             <Typography>Date nav</Typography>
             <Typography>{getMonthAndDayNav(dateStore)}</Typography>
             <Typography>{dateStore}th day</Typography>
-        </Box>
+        </Box> */}
 
         <Box sx={{width:'750px',height:'30px',position:'fixed',top:'10px',left:'10px',backgroundColor:'#efefef',borderRadius:'15px',overflow:'hidden',display:'flex',flexDirection:'column',alignItems:'center'}}>
             <Box sx={{display:'flex',justifyContent:'space-between',width:'100%'}}>
@@ -137,9 +160,14 @@ export default function DateController() {
             value={dateStore}
             size='small'
             onChange={(e)=>setDateStore(e.target.value)}
+            onMouseDown={()=>setMove(true)}
             onMouseUp={handleDate}
             />
         </Box>
+        {move?<Box sx={{backgroundColor:'#efefef',position:'fixed',top:'45px',left:'20px',borderRadius:'3px',width:'45px',left:`${mouseX}px`}}>
+            <Typography sx={{fontSize:'12px',textAlign:'center'}}>{getMonthAndDayNav(dateStore)}</Typography>
+        </Box>:''}
+ 
     </div>
   )
 }

@@ -67,11 +67,11 @@ console.log(opacity);
 
               {/* -- longitutes --- */}
               <div style={{width:'42%',height:'1px',backgroundColor:'grey'}}></div>
-              <Typography sx={{color:'grey',mt:'24px',opacity:opacity}}>{season.n}</Typography>
+              <Typography sx={{mt:'24px',opacity:opacity}}>{season.n}</Typography>
               <div style={{width:'96%',height:'1px',backgroundColor:'grey',marginTop:'25px'}}></div>
               <div style={{width:'100%',height:'1px',backgroundColor:'grey',marginTop:'25px',marginBottom:'25px'}}></div>
               <div style={{width:'96%',height:'1px',backgroundColor:'grey',marginBottom:'25px'}}></div>
-              <Typography sx={{color:'grey',mb:'24px',opacity:opacity}}>{season.s}</Typography>
+              <Typography sx={{mb:'24px',opacity:opacity}}>{season.s}</Typography>
               <div style={{width:'43%',height:'1px',backgroundColor:'grey'}}></div>
 
               {/* -- day / night earth half --- */}
