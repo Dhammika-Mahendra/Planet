@@ -11,7 +11,7 @@ export default function Speed() {
   const {speed,setSpeed}=useContext(Contxt)
 
   return (
-    <Box sx={{ width: '220px' ,display:'flex',alignItems:'center',mb:'30px'}}>
+    <Box sx={{ width: '220px' ,display:'flex',alignItems:'center',p:'10px',mb:'10px',pt:'5px'}}>
       <SpeedIcon sx={{mr:'5px',height:'20px',width:'20px'}}></SpeedIcon>
       <Slider
         aria-label="Temperature"

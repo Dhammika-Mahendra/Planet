@@ -6,10 +6,13 @@ import Position from './Comp/Position'
 import { useContext } from 'react'
 import Contxt from './Contx'
 import Circle from './Comp/Circle'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Paper, Typography } from '@mui/material'
 import HelpIcon from '@mui/icons-material/Help';
+import CloseIcon from '@mui/icons-material/Close';
+import { useState } from 'react'
 
 export default function Controller() {
+  const [help,setHelp]=useState(false)
 
   return (
     <div style={{height:'100%',width:'20%',backgroundColor:'#efefef',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'space-around'}}>
@@ -20,7 +23,15 @@ export default function Controller() {
         </Box>
         <OptionsSelector></OptionsSelector>
         <Position></Position>
-        <Button endIcon={<HelpIcon/>}  size='small' variant='outlined' sx={{border:'2px solid grey',backgroundColor:'#efefef',color:'black',alignSelf:'end',mr:'10px','&:hover':{backgroundColor:'#e3e3e3',color:'black',border:'2px solid grey'}}}>help</Button>
+        <HelpIcon sx={{cursor:'pointer',alignSelf:'end','&:hover':{color:'blue'},mr:'20px'}} onClick={()=>setHelp(true)}></HelpIcon>
+
+        {/* ---- help box ------ */}
+        {help?<Paper sx={{position:'fixed',width:'90vw',height:'90vh',top:'5vh',left:'5vh',backgroundColor:'#efefef',zIndex:'40'}}>
+            <Box sx={{height:'15px',p:'4px',display:'flex',justifyContent:'end',alignItems:'center'}}>
+            <CloseIcon sx={{cursor:'pointer'}} onClick={()=>setHelp(false)}></CloseIcon>
+            </Box>
+        </Paper>:''}
+
     </div>
   )
 }

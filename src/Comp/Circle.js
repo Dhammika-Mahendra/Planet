@@ -49,12 +49,12 @@ export default function Circle() {
     } else if (x > 231 && x <= 324) {
       setOpacity(1-Math.abs((x-279)/49))
       setSeason({s:'Spring',n:'Autumn'})
-    } else if ((x > 324 && x <= 365) || (x > 0 && x <= 49)) {
+    } else if (x > 324 || x <= 49) {
       if (x > 324 && x <= 365) {
-        setOpacity(1-Math.abs((x-365+4)/49))
+        setOpacity(1-Math.abs((365-x)/41))
         setSeason({s:'Summer',n:'Winter'})
       } else {
-        setOpacity(Math.abs((49-x)/49))
+        setOpacity(Math.abs((49-x)/48))
         setSeason({s:'Summer',n:'Winter'})
       }    
     }

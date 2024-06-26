@@ -100,9 +100,9 @@ export default function DateController() {
 
   return (
     <div>
-        <Box sx={{width:'250px',display:'flex',alignItems:'center',justifyContent:'start',p:'10px'}}>
+        <Box sx={{width:'220px',display:'flex',alignItems:'center',pr:'5px',pl:'10px',border:'1px solid lightGrey',borderRadius:'8px',pt:'5px',pb:'5px'}}>
         {!autoR?<PlayCircleFilledWhiteIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>:<PauseCircleIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>}
-        <Box sx={{flex:1,display:'flex',flexDirection:'column',ml:'15px',pl:'15px',borderLeft:'2px solid grey'}}>
+        <Box sx={{flex:1,display:'flex',flexDirection:'column',ml:'10px',pl:'15px',borderLeft:'1px solid grey'}}>
             <Typography sx={{fontSize:'24px',fontWeight:'bold'}}>{getMonthAndDay(dateFeedBack)}</Typography>
             <Typography>{dateFeedBack}</Typography>
         </Box>
