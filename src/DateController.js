@@ -86,6 +86,45 @@ export default function DateController() {
         //console.log(`${MonthTag[month-1]}/${day}`)
     }
 
+    function adjustDateFeedback(dayNumber){
+        if(dayNumber<1 || dayNumber>365){
+            return
+        }
+        var day = 0;
+
+        if(dayNumber>13){
+            day=dayNumber-13
+        }else{
+            day=352+dayNumber
+        }
+        return day
+    }
+
+    function getEvent(dayNumber){
+        if(dayNumber<1 || dayNumber>365){
+            return
+        }
+        var day = 0;
+
+        if(dayNumber>13){
+            day=dayNumber-13
+        }else{
+            day=352+dayNumber
+        }
+
+        if(day===80||day===81){
+            return 'Vernal Equinox'
+        }else if(day===265||day===266){
+            return 'Autumnal Equinox'
+        }else if(day===355||day===356){
+            return 'Winter Solstice'
+        }else if(day===172||day===173){
+            return 'Summer Solstice'
+        }
+        return ''
+    
+    }
+
     useEffect(()=>{
         if(!autoR){
             let tmp=dateFeedBack
@@ -96,15 +135,27 @@ export default function DateController() {
             }
             setDateStore(tmp)
         }
+
+        //space bar to start/stop auto rotation
+        const handleKeyDown = (event) => {
+            if (event.code === 'Space') {
+                setAutoR(!autoR)
+            }
+          };
+          window.addEventListener('keydown', handleKeyDown);
+                return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+          };
     },[autoR])
 
   return (
     <div>
-        <Box sx={{width:'220px',display:'flex',alignItems:'center',pr:'5px',pl:'10px',border:'1px solid lightGrey',borderRadius:'8px',pt:'5px',pb:'5px'}}>
+        <Box sx={{width:'220px',display:'flex',alignItems:'center',pr:'5px',pl:'10px',border:'1px solid lightGrey',borderRadius:'8px',pt:'5px',pb:'5px',position:'relative'}}>
         {!autoR?<PlayCircleFilledWhiteIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>:<PauseCircleIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>}
         <Box sx={{flex:1,display:'flex',flexDirection:'column',ml:'10px',pl:'15px',borderLeft:'1px solid grey'}}>
             <Typography sx={{fontSize:'24px',fontWeight:'bold'}}>{getMonthAndDay(dateFeedBack)}</Typography>
-            <Typography>{dateFeedBack}</Typography>
+            <Typography>{`day ${adjustDateFeedback(dateFeedBack)}`}</Typography>
+            <Typography sx={{position:'absolute',bottom:'7px',right:'5px',fontSize:'11px',color:'blue'}}>{getEvent(dateFeedBack)}</Typography>
         </Box>
         </Box>
 
