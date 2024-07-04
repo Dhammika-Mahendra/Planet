@@ -32,10 +32,9 @@ export default function View() {
   const rendererRef = useRef(null);
   const controlRef = useRef(null)
 
-  const {setCam}=useContext(Contxt)
   const {cam}=useContext(Contxt)//imediate camera position button states
   const [camLookAt,setCamLookAt]=useState({x:0,y:0,z:0})//store where camera look at, bec when cam property cahnges its settings are overridden by controls.update()
-  const [cameraPosition, setCameraPosition] = useState({x:0,y:20,z:0});
+  const [cameraPosition, setCameraPosition] = useState({x:0,y:20,z:15});
   const [pos,setPos] = useState(0);
   const [dateTemp,setDateTemp]=useState(0)
   const [autoRstore,setAutoRstore]=useState(autoR)
@@ -58,6 +57,17 @@ const controls = new OrbitControls( camera, renderer.domElement );
 controls.minDistance = 0.1
 controls.target.set(camLookAt.x,camLookAt.y,camLookAt.z)
 controls.update()
+
+//responsive canvas
+const handleResize = () => {
+  const width = window.innerWidth * 0.8;
+  const height = window.innerHeight;
+  renderer.setSize(width, height);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+};
+
+window.addEventListener('resize', handleResize);
 
 //=======================================================================================================
 //=========================          Objects                   ==========================================
@@ -357,6 +367,7 @@ rendererRef.current = renderer;
 controlRef.current = controls
 
 return () => {
+  window.removeEventListener('resize', handleResize);
   renderer.domElement.remove();
   renderer.dispose();
 };

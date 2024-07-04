@@ -10,8 +10,7 @@ import MidAxisIco from './Icons/midAxisIco'
 import { TropicIco } from './Icons/tropicIco'
 import { PolesIco } from './Icons/polesIco'
 import { LightIco } from './Icons/lightIco'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 
 export default function OptionsSelector() {
 
@@ -38,7 +37,6 @@ export default function OptionsSelector() {
           <SouthEastIcon sx={{width:'20px',height:'20px',color:sunRay?'blue':'black',cursor:'pointer'}} onClick={()=>setSunRay(!sunRay)}></SouthEastIcon>
           <Brightness5Icon sx={{width:'20px',height:'20px',color:sunSph?'blue':'black',cursor:'pointer'}} onClick={()=>setSunSph(!sunSph)}></Brightness5Icon>
           <RotateLeftIcon sx={{width:'20px',height:'20px',color:traject?'blue':'black',cursor:'pointer'}} onClick={()=>setTraject(!traject)}></RotateLeftIcon>
-          <CalendarMonthIcon sx={{width:'20px',height:'20px',color:'black'}}></CalendarMonthIcon>
           <Typography sx={{fontSize:'12px',position:'absolute',top:'-16px',left:'5px',color:'grey'}}>System</Typography>
         </Box>
     </Box>

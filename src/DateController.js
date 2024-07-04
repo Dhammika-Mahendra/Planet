@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, Slider, Switch, Typography } from '@mui/material'
+import { Box, Slider, Typography } from '@mui/material'
 import React from 'react'
 import { useState } from 'react';
 import Contxt from './Contx';
@@ -153,7 +153,7 @@ export default function DateController() {
         <Box sx={{width:'220px',display:'flex',alignItems:'center',pr:'5px',pl:'10px',border:'1px solid lightGrey',borderRadius:'8px',pt:'5px',pb:'5px',position:'relative'}}>
         {!autoR?<PlayCircleFilledWhiteIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>:<PauseCircleIcon sx={{fontSize:'40px',cursor:'pointer','&:hover':{color:'blue'}}} onClick={()=>setAutoR(!autoR)}/>}
         <Box sx={{flex:1,display:'flex',flexDirection:'column',ml:'10px',pl:'15px',borderLeft:'1px solid grey'}}>
-            <Typography sx={{fontSize:'24px',fontWeight:'bold'}}>{getMonthAndDay(dateFeedBack)}</Typography>
+             <Typography sx={{fontSize:'24px',fontWeight:'bold'}}>{getMonthAndDay(dateFeedBack)}</Typography>
             <Typography>{`day ${adjustDateFeedback(dateFeedBack)}`}</Typography>
             <Typography sx={{position:'absolute',bottom:'7px',right:'5px',fontSize:'11px',color:'blue'}}>{getEvent(dateFeedBack)}</Typography>
         </Box>

@@ -58,7 +58,6 @@ export default function Circle() {
         setSeason({s:'Summer',n:'Winter'})
       }    
     }
-console.log(opacity);
   },[dateFeedBack])
 
 

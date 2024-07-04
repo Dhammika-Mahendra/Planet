@@ -15,8 +15,8 @@ export function Contx({children}){
     const [tropics,setTropics]=useState(false)//capricon and cancer
     const [poleCircles,setPoleCircles]=useState(true)//pole circles
     const [earthAxis,setEarthAxis]=useState(true)//earth cross axis
-    const [sunRay,setSunRay]=useState(true)//perpendicular ray from sun
-    const [sunSph,setSunSph]=useState(false)//sun
+    const [sunRay,setSunRay]=useState(false)//perpendicular ray from sun
+    const [sunSph,setSunSph]=useState(true)//sun
     const [traject,setTraject]=useState(true)//earth trajectory path
 
     {/* ----- camera direction ------------- */}
